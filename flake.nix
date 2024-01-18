@@ -30,6 +30,7 @@
         nix-init = inputs.nix-init.outputs.packages."${system}".default;
       });
       packages = forAllSystems (system: nixpkgs.lib.filterAttrs (_: v: nixpkgs.lib.isDerivation v) self.legacyPackages.${system});
+      nixosModules = import ./modules;
       devShells = forAllSystems (system: {
         default = import ./shell.nix {
           pkgs = import nixpkgs { inherit system; };
