@@ -21,7 +21,7 @@
         "armv6l-linux"
         "armv7l-linux"
       ];
-      forAllSystems = f: nixpkgs.lib.genAttrs systems (system: f system);
+      forAllSystems = f: nixpkgs.lib.genAttrs systems f;
     in
     {
       legacyPackages = forAllSystems (system: (import ./default.nix {
@@ -37,5 +37,12 @@
           nix-init = inputs.nix-init.outputs.packages."${system}".default;
         };
       });
+      formatter = forAllSystems (system:
+        let
+          pkgs = import nixpkgs { inherit system; };
+        in
+        pkgs.writeScriptBin "formatter" ''
+          ${pkgs.pre-commit}/bin/pre-commit run -a
+        '');
     };
 }
