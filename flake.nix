@@ -1,9 +1,15 @@
 {
   description = "My personal NUR repository";
-  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-  inputs.nix-init = {
-    url = "github:nix-community/nix-init/v0.3.0";
-    #inputs.nixpkgs.follows = "nixpkgs"; # Don't, nix-init build breaks
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    nix-init = {
+      url = "github:nix-community/nix-init/v0.3.0";
+      #inputs.nixpkgs.follows = "nixpkgs"; # Don't, nix-init build breaks
+    };
+    nix-pre-commit = {
+      url = "github:jmgilman/nix-pre-commit";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   outputs = { self, nixpkgs, ... }@inputs:
     let
