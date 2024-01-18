@@ -15,6 +15,7 @@
   overlays = import ./overlays; # nixpkgs overlays
 
   numbat = pkgs.callPackage ./pkgs/numbat { };
+  initramfs-tools = pkgs.callPackage ./pkgs/initramfs-tools { };
   # some-qt5-package = pkgs.libsForQt5.callPackage ./pkgs/some-qt5-package { };
   # ...
 }
