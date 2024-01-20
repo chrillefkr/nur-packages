@@ -1,5 +1,13 @@
 {
   description = "My personal NUR repository";
+  nixConfig = {
+    extra-substituters = [
+      "https://chrillefkr-nur-repo.cachix.org"
+    ];
+    extra-trusted-public-keys = [
+      "chrillefkr-nur-repo.cachix.org-1:trN48icxaeXamJnNupHAKHWfuen58GjSiAiI/wAdSfo="
+    ];
+  };
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nix-init = {

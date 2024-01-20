@@ -1,12 +1,14 @@
-{ pkgs
-, inputs
-, nix-init ? inputs.nix-init.packages."${system}".default
+{ self
+, pkgs
 , system ? builtins.currentSystem
+, nix-pre-commit-lib ? self.inputs.nix-pre-commit.lib."${system}"
+, nix-init ? self.inputs.nix-init.packages."${system}".default
+, dependabot-cli ? self.outputs.packages."${system}".dependabot-cli
 , ...
 }:
 pkgs.mkShell.override { stdenv = pkgs.stdenvNoCC; } {
   packages = with pkgs; [
-    # Ensure same shell interpretation and nix evaluation
+    # Ensure reproducible shell interpretation and nix evaluation
     nix
     bash
     git
@@ -21,12 +23,17 @@ pkgs.mkShell.override { stdenv = pkgs.stdenvNoCC; } {
     # Nix maintainer helper tools
     nix-init
     nix-update
-    nvchecker
+
+    # CI
+    cachix
+    act # Run GitHub actions locally
+    gh # GitHub CLI
+    dependabot-cli # From this repo
   ];
   shellHook = ''
     [[ ! -a .pre-commit-config.yaml ]] && ln -fs /dev/null .pre-commit-config.yaml # fix nix-pre-commit
   '' +
-  (inputs.nix-pre-commit.lib.${system}.mkConfig {
+  (nix-pre-commit-lib.mkConfig {
     inherit pkgs;
     config = {
       repos = [
