@@ -18,6 +18,11 @@
       url = "github:jmgilman/nix-pre-commit";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    flake-compat.url = "https://flakehub.com/f/edolstra/flake-compat/1.tar.gz";
+    nix-fast-build = {
+      url = "github:Mic92/nix-fast-build";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   outputs = { self, nixpkgs, ... }@inputs:
     let
@@ -36,11 +41,20 @@
         pkgs = import nixpkgs { inherit system; };
       }) // {
         nix-init = inputs.nix-init.outputs.packages."${system}".default;
+        inherit (inputs.nix-fast-build.packages."${system}") nix-fast-build;
       });
       packages = forAllSystems (system: nixpkgs.lib.filterAttrs (_: v: nixpkgs.lib.isDerivation v) self.legacyPackages.${system});
+      checks = forAllSystems (system:
+        let
+          ci = import ./ci.nix {
+            pkgs = import nixpkgs { inherit system; };
+          };
+          attr = builtins.listToAttrs (builtins.map (p: { name = p.pname; value = p; }) ci.cacheOutputs);
+        in
+        attr);
       nixosModules = import ./modules;
       devShells = forAllSystems (system: {
-        default = import ./shell.nix {
+        default = import ./devshell.nix {
           pkgs = import nixpkgs { inherit system; };
           inherit self inputs system;
           nix-init = inputs.nix-init.outputs.packages."${system}".default;
