@@ -10,3 +10,6 @@ result-*
 
 # pre-commit is generated in shell.nix
 .pre-commit-config.yaml
+
+# nvchecker backup files
+nv/*~

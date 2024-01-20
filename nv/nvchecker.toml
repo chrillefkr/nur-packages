@@ -1,0 +1,10 @@
+[__config__]
+oldver = "old_ver.json"
+newver = "new_ver.json"
+
+[initramfs-tools]
+source = "gitlab"
+host = "salsa.debian.org"
+gitlab = "kernel-team/initramfs-tools"
+use_max_tag = true
+

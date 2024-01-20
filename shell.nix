@@ -29,6 +29,7 @@ pkgs.mkShell.override { stdenv = pkgs.stdenvNoCC; } {
     act # Run GitHub actions locally
     gh # GitHub CLI
     dependabot-cli # From this repo
+    nvchecker
   ];
   shellHook = ''
     [[ ! -a .pre-commit-config.yaml ]] && ln -fs /dev/null .pre-commit-config.yaml # fix nix-pre-commit
