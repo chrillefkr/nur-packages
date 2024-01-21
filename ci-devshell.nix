@@ -2,8 +2,6 @@
 , pkgs
 , system ? builtins.currentSystem
 , nix-pre-commit-lib ? self.inputs.nix-pre-commit.lib."${system}"
-, nix-init ? self.inputs.nix-init.packages."${system}".default
-, dependabot-cli ? self.outputs.packages."${system}".dependabot-cli
 , nix-fast-build ? self.outputs.packages."${system}".nix-fast-build
 , ...
 }:
@@ -22,16 +20,11 @@ pkgs.mkShell.override { stdenv = pkgs.stdenvNoCC; } {
     statix
 
     # Nix maintainer helper tools
-    nix-init
     nix-update
 
     # CI
     cachix
-    act # Run GitHub actions locally
-    gh # GitHub CLI
-    #dependabot-cli # From this repo
     nvchecker
-    gnumake
     nix-fast-build
   ];
   shellHook = ''

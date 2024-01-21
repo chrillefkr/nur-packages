@@ -59,6 +59,10 @@
           inherit self inputs system;
           nix-init = inputs.nix-init.outputs.packages."${system}".default;
         };
+        ci = import ./ci-devshell.nix {
+          pkgs = import nixpkgs { inherit system; };
+          inherit self inputs system;
+        };
       });
       formatter = forAllSystems (system:
         let
