@@ -11,6 +11,13 @@ on:
     # TIP: Choose a random time here so not all repositories are build at once:
     # https://www.random.org/clock-times/?num=1&earliest=01%3A00&latest=08%3A00&interval=5&format=html&rnd=new
     - cron:  '40 7 * * *'
+  workflow_dispatch:
+    inputs:
+      bump:
+        description: 'Bump dependencies'
+        required: true
+        default: false
+        type: boolean
 jobs:
   tests:
     strategy:
@@ -52,11 +59,18 @@ jobs:
         name: ${{ matrix.cachixName }}
         signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
         authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+
+
     - name: Update sources and dependencies
-      if: ${{ github.event_name == 'schedule' }}
-      run: nix shell --accept-flake-config .\#devShells.x86_64-linux.default -c bash ./scripts/bump.sh
+      if: ${{ github.event_name == 'schedule' || inputs.bump }}
+      run: nix shell --accept-flake-config ".#devShells.$(nix eval --raw --impure --expr builtins.currentSystem).ci" -c bash ./scripts/bump.sh
+
     - name: Build nix packages
       run: nix run --accept-flake-config '.#nix-fast-build' -- --option accept-flake-config true --skip-cached --no-nom --flake ".#checks.$(nix eval --raw --impure --expr builtins.currentSystem)"
+
+    - name: See if there's any updates
+      id: result
+      run: compgen -G "result*"
 
     - name: Trigger NUR update
       # Don't replace <YOUR_REPO_NAME> here!
