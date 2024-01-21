@@ -71,7 +71,12 @@ jobs:
 
     - name: See if there's any updates
       id: result
+      continue-on-error: true
       run: compgen -G "result*"
+
+    - name: There's updates; let's make a PR
+      uses: peter-evans/create-pull-request@v5
+      if: ${{ steps.result.conclusion == 'success' }}
 
     - name: Trigger NUR update
       # Don't replace <YOUR_REPO_NAME> here!
