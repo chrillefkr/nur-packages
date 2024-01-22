@@ -37,11 +37,12 @@
       forAllSystems = f: nixpkgs.lib.genAttrs systems f;
     in
     {
-      legacyPackages = forAllSystems (system: (import ./default.nix {
+      legacyPackages = forAllSystems (system: (import ./pkgs.nix {
         pkgs = import nixpkgs { inherit system; };
       }) // {
         nix-init = inputs.nix-init.outputs.packages."${system}".default;
         inherit (inputs.nix-fast-build.packages."${system}") nix-fast-build;
+        inherit (inputs.nixpkgs.legacyPackages."${system}") cachix;
       });
       packages = forAllSystems (system: nixpkgs.lib.filterAttrs (_: v: nixpkgs.lib.isDerivation v) self.legacyPackages.${system});
       checks = forAllSystems (system:

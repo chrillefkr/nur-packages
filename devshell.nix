@@ -3,7 +3,6 @@
 , system ? builtins.currentSystem
 , nix-pre-commit-lib ? self.inputs.nix-pre-commit.lib."${system}"
 , nix-init ? self.inputs.nix-init.packages."${system}".default
-, dependabot-cli ? self.outputs.packages."${system}".dependabot-cli
 , nix-fast-build ? self.outputs.packages."${system}".nix-fast-build
 , ...
 }:

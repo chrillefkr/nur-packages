@@ -21,27 +21,6 @@ on:
         type: boolean
 jobs:
   tests:
-    strategy:
-      matrix:
-        # Set this to notify the global nur package registry that changes are
-        # available.
-        #
-        # The repo name as used in
-        # https://github.com/nix-community/NUR/blob/master/repos.json
-        nurRepo:
-          - <YOUR_REPO_NAME>
-        # Set this to cache your build results in cachix for faster builds
-        # in CI and for everyone who uses your cache.
-        #
-        # Format: Your cachix cache host name without the ".cachix.org" suffix.
-        # Example: mycache (for mycache.cachix.org)
-        #
-        # For this to work, you also need to set the CACHIX_SIGNING_KEY or
-        # CACHIX_AUTH_TOKEN secret in your repository secrets settings in
-        # Github found at
-        # https://github.com/<your_githubname>/nur-packages/settings/secrets
-        cachixName:
-          - chrillefkr-nur-repo
     runs-on: ubuntu-latest
     steps:
     - name: Checkout repository
@@ -52,33 +31,33 @@ jobs:
         extra_nix_config: |
           experimental-features = nix-command flakes
           access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
+
+    - uses: DeterminateSystems/magic-nix-cache-action@main
+
     - name: Setup cachix
       uses: cachix/cachix-action@v14
-      # Don't replace <YOUR_CACHIX_NAME> here!
-      if: ${{ matrix.cachixName != '<YOUR_CACHIX_NAME>' }}
       with:
-        name: ${{ matrix.cachixName }}
-        signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
+        name: chrillefkr-nur-repo
+        #signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
         authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
-
+        installCommand: nix profile -v -L --show-trace --accept-flake-config install .\#packages.x86_64-linux.cachix
 
     - name: Update sources and dependencies
       if: ${{ github.event_name == 'schedule' || inputs.bump }}
-      run: nix shell --accept-flake-config ".#devShells.$(nix eval --raw --impure --expr builtins.currentSystem).ci" -c bash ./scripts/bump.sh
+      run: nix develop -v -L --show-trace --accept-flake-config ".#ci" -c bash ./scripts/bump.sh
 
     - name: Build nix packages
-      run: nix run --accept-flake-config '.#nix-fast-build' -- --option accept-flake-config true --skip-cached --no-nom --flake ".#checks.$(nix eval --raw --impure --expr builtins.currentSystem)"
+      run: nix run -v -L --show-trace --accept-flake-config '.#nix-fast-build' -- --option accept-flake-config true --skip-cached --no-nom --flake ".#checks.$(nix eval --raw --impure --expr builtins.currentSystem)"
 
     - name: See if there's any updates
       id: result
       continue-on-error: true
       run: compgen -G "result*"
 
-    - name: There's updates; let's make a PR
+    - name: If there's updates - make a PR
       uses: peter-evans/create-pull-request@v5
-      if: ${{ steps.result.conclusion == 'success' }}
+      if: ${{ steps.result.outcome == 'success' }}A
 
     - name: Trigger NUR update
-      # Don't replace <YOUR_REPO_NAME> here!
-      if: ${{ matrix.nurRepo != '<YOUR_REPO_NAME>' }}
+      if: ${{ false }}
       run: curl -XPOST "https://nur-update.nix-community.org/update?repo=${{ matrix.nurRepo }}"

@@ -1,22 +1,12 @@
-# This file describes your repository contents.
-# It should return a set of nix derivations
-# and optionally the special attributes `lib`, `modules` and `overlays`.
-# It should NOT import <nixpkgs>. Instead, you should take pkgs as an argument.
-# Having pkgs default to <nixpkgs> is fine though, and it lets you use short
-# commands such as:
-#     nix-build -A mypackage
+# This is just a flake-compat wrapper. Actual packages is defined in ./pkgs.nix
 
-{ pkgs ? import <nixpkgs> { } }:
-
-{
-  # The `lib`, `modules`, and `overlay` names are special
-  lib = import ./lib { inherit pkgs; }; # functions
-  modules = import ./modules; # NixOS modules
-  overlays = import ./overlays; # nixpkgs overlays
-
-  numbat = pkgs.callPackage ./pkgs/numbat { };
-  initramfs-tools = pkgs.callPackage ./pkgs/initramfs-tools { };
-  dependabot-cli = pkgs.callPackage ./pkgs/dependabot-cli { };
-  # some-qt5-package = pkgs.libsForQt5.callPackage ./pkgs/some-qt5-package { };
-  # ...
-}
+(import
+  (
+    let lock = builtins.fromJSON (builtins.readFile ./flake.lock); in
+    fetchTarball {
+      url = lock.nodes.flake-compat.locked.url or "https://github.com/edolstra/flake-compat/archive/${lock.nodes.flake-compat.locked.rev}.tar.gz";
+      sha256 = lock.nodes.flake-compat.locked.narHash;
+    }
+  )
+  { src = ./.; }
+).defaultNix
