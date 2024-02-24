@@ -1,6 +1,7 @@
 name: "Build and populate cache"
 env:
   NIX_PAGER: cat
+  BUMP_AND_COMMIT: 1 # scripts/bump.sh
 on:
   pull_request:
   push:
@@ -52,7 +53,8 @@ jobs:
     - name: See if there's any updates
       id: result
       continue-on-error: true
-      run: compgen -G "result*"
+      run: |
+        test "$(git log origin/main..HEAD | wc -l)" -gt 0
 
     - name: If there's updates - make a PR
       uses: peter-evans/create-pull-request@v6
