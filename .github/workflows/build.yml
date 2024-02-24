@@ -43,6 +43,11 @@ jobs:
         authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
         installCommand: nix profile -v -L --show-trace --accept-flake-config install .\#packages.x86_64-linux.cachix
 
+    - name: Setup git
+      run: |
+        git config user.name 'Christopher Janzon'
+        git config user.email 'chrillefkr@users.noreply.github.com'
+
     - name: Update sources and dependencies
       if: ${{ github.event_name == 'schedule' || inputs.bump }}
       run: nix develop -v -L --show-trace --accept-flake-config ".#ci" -c bash ./scripts/bump.sh
