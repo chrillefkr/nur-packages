@@ -55,7 +55,7 @@ jobs:
       run: compgen -G "result*"
 
     - name: If there's updates - make a PR
-      uses: peter-evans/create-pull-request@v5
+      uses: peter-evans/create-pull-request@v6
       if: ${{ steps.result.outcome == 'success' }}
 
     - name: Trigger NUR update
