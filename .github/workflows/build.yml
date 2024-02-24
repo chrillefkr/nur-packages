@@ -56,7 +56,7 @@ jobs:
 
     - name: If there's updates - make a PR
       uses: peter-evans/create-pull-request@v5
-      if: ${{ steps.result.outcome == 'success' }}A
+      if: ${{ steps.result.outcome == 'success' }}
 
     - name: Trigger NUR update
       if: ${{ false }}
