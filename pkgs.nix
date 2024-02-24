@@ -1,4 +1,4 @@
-{ pkgs ? import <nixpkgs> { } }:
+{ pkgs ? import <nixpkgs> { }, ... }:
 
 {
   # The `lib`, `modules`, and `overlay` names are special

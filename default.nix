@@ -9,4 +9,7 @@
     }
   )
   { src = ./.; }
-).defaultNix
+).defaultNix // {
+  __functor = import ./pkgs.nix;
+}
+
