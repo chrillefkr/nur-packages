@@ -57,6 +57,8 @@ jobs:
     - name: If there's updates - make a PR
       uses: peter-evans/create-pull-request@v6
       if: ${{ steps.result.outcome == 'success' }}
+      with:
+        commit-message: "build(deps): bump package versions"
 
     - name: Trigger NUR update
       if: ${{ false }}
