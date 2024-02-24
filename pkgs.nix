@@ -8,5 +8,5 @@
 
   numbat = pkgs.callPackage ./pkgs/numbat { };
   initramfs-tools = pkgs.callPackage ./pkgs/initramfs-tools { };
-  dependabot-cli = pkgs.callPackage ./pkgs/dependabot-cli { };
+  dependabot-cli = pkgs.callPackage ./pkgs/dependabot-cli { buildGoModule = pkgs.buildGo122Module; };
 }
