@@ -7,16 +7,16 @@
 
 buildGoModule rec {
   pname = "dependabot-cli";
-  version = "1.47.0";
+  version = "1.52.0";
 
   src = fetchFromGitHub {
     owner = "dependabot";
     repo = "cli";
     rev = "v${version}";
-    hash = "sha256-3sSZWgeoLXPHh0/lAAqJwgJFgdwPS8xUei1Pval0eQQ=";
+    hash = "sha256-wb91otcK1zKWWlGCm1lYoN+Him2w4DROr0DTFCajsZ4=";
   };
 
-  vendorHash = "sha256-ZrmW1z3iaC115Sl8XAFe9TqZoaE+vzUFUFxWvqsBZA8=";
+  vendorHash = "sha256-vUT+WbABtfCO3flrD43XvPdZzRD8cEJLCtUVHsasquw=";
 
   ldflags = [
     "-s"
