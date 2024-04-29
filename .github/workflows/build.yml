@@ -9,7 +9,6 @@ on:
       - main
       - test-ci
   schedule:
-    # rebuild everyday at 2:51
     # TIP: Choose a random time here so not all repositories are build at once:
     # https://www.random.org/clock-times/?num=1&earliest=01%3A00&latest=08%3A00&interval=5&format=html&rnd=new
     - cron:  '40 7 * * *'
@@ -21,11 +20,12 @@ on:
         default: false
         type: boolean
 jobs:
-  tests:
+  build-and-populate-cache:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
+
     - name: Install nix
       uses: cachix/install-nix-action@v26
       with:
@@ -70,3 +70,4 @@ jobs:
     - name: Trigger NUR update
       if: ${{ false }}
       run: curl -XPOST "https://nur-update.nix-community.org/update?repo=${{ matrix.nurRepo }}"
+
