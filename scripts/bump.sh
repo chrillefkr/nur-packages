@@ -10,6 +10,7 @@ nix flake update --accept-flake-config -v -L --show-trace
 
 while read -r pkg; do
 	nix-update -F "$pkg" || continue
+	git diff --exit-code "pkgs/$pkg" |& >/dev/null && continue
 	if [[ "$BUMP_AND_COMMIT" != "0" ]]; then
 		git stash push
 		pre_version="$(nix eval --raw ".#${pkg}.version")"
@@ -32,3 +33,4 @@ nvcmp -c nv/nvchecker.toml | while read -r pkg fr _ to; do
 		git commit -m "build(${pkg}): bump version from ${fr} to ${to}"
 	fi
 done
+
