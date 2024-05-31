@@ -10,4 +10,5 @@
   initramfs-tools = pkgs.callPackage ./pkgs/initramfs-tools { };
   dependabot-cli = pkgs.callPackage ./pkgs/dependabot-cli { buildGoModule = pkgs.buildGo122Module; };
   resticprofile = pkgs.callPackage ./pkgs/resticprofile { };
+  linux-msft-wsl = pkgs.callPackage ./pkgs/linux-msft-wsl { };
 }

@@ -1,0 +1,12 @@
+diff --git a/drivers/gpu/drm/Kconfig b/drivers/gpu/drm/Kconfig
+index f30f991..d77e1e8 100644
+--- a/drivers/gpu/drm/Kconfig
++++ b/drivers/gpu/drm/Kconfig
+@@ -15,6 +15,7 @@ menuconfig DRM
+ 	select I2C
+ 	select I2C_ALGOBIT
+ 	select DMA_SHARED_BUFFER
++	select DRM_KMS_HELPER
+ 	select SYNC_FILE
+ # gallium uses SYS_kcmp for os_same_file_description() to de-duplicate
+ # device and dmabuf fd. Let's make sure that is available for our userspace.
