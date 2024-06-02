@@ -5,14 +5,14 @@
 
 stdenvNoCC.mkDerivation rec {
   pname = "initramfs-tools";
-  version = "0.142";
+  version = "0.143";
 
   src = fetchFromGitLab {
     domain = "salsa.debian.org";
     owner = "kernel-team";
     repo = "initramfs-tools";
     rev = "v${version}";
-    hash = "sha256-6DnqTz1PtJpI/mgojQidWPyja7z27BelsNqa3dlkweE=";
+    hash = "sha256-dZ6l2qRlvn49Mat5342vHaNpWy5TxCsdUX7WesmLqZQ=";
   };
 
   outputs = [ "out" ];
