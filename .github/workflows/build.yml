@@ -62,7 +62,7 @@ jobs:
         test "$(git log origin/main..HEAD | wc -l)" -gt 0
 
     - name: If there's updates - make a PR
-      uses: peter-evans/create-pull-request@v6
+      uses: peter-evans/create-pull-request@v7
       if: ${{ steps.result.outcome == 'success' }}
       with:
         commit-message: "build(deps): bump package versions"
