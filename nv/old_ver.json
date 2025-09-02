@@ -1,6 +1,8 @@
 {
   "version": 2,
   "data": {
-    "initramfs-tools": "v0.143"
+    "initramfs-tools": {
+      "version": "v0.150"
+    }
   }
 }

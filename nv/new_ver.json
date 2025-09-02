@@ -2,9 +2,9 @@
   "version": 2,
   "data": {
     "initramfs-tools": {
-      "version": "v0.143",
-      "revision": "84e5c0f7dac1a17e980ed8dfb0e0e8729d9388db",
-      "url": "https://salsa.debian.org/kernel-team/initramfs-tools/-/tags/v0.143"
+      "version": "v0.150",
+      "revision": "26e666f1f94fc6925aca56ee2bda0b19eccd0064",
+      "url": "https://salsa.debian.org/kernel-team/initramfs-tools/-/tags/v0.150"
     }
   }
 }
