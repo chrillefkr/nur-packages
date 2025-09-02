@@ -20,8 +20,6 @@ while read -r pkg; do
 		git commit -m "build(${pkg}): bump version from ${pre_version} to ${post_version}"
 	fi
 done <<EOF
-numbat
-dependabot-cli
 EOF
 
 nvchecker -c nv/nvchecker.toml
