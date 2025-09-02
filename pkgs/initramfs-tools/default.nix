@@ -1,9 +1,9 @@
 { lib
-, stdenvNoCC
+, stdenv
 , fetchFromGitLab
 }:
 
-stdenvNoCC.mkDerivation rec {
+stdenv.mkDerivation rec {
   pname = "initramfs-tools";
   version = "0.150";
 
@@ -16,7 +16,9 @@ stdenvNoCC.mkDerivation rec {
   };
 
   outputs = [ "out" ];
-  buildPhase = "";
+
+  patches = [ ./signal.h.patch ];
+
   installPhase = ''
     mkdir -p $out/bin $out/share/man{5,7,8} $out/share/bash-completion/completions
     cp lsinitramfs mkinitramfs unmkinitramfs update-initramfs $out/bin

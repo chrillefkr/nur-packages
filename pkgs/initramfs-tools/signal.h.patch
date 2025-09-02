@@ -1,0 +1,12 @@
+diff --git a/unmkinitramfs.c b/unmkinitramfs.c
+index ab42d72..5dfc191 100644
+--- a/unmkinitramfs.c
++++ b/unmkinitramfs.c
+@@ -9,6 +9,7 @@
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <string.h>
++#include <signal.h>
+ 
+ #include <err.h>
+ #include <getopt.h>
