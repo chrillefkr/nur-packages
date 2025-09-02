@@ -11,7 +11,7 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nix-init = {
-      url = "github:nix-community/nix-init/v0.3.0";
+      url = "github:nix-community/nix-init";
       #inputs.nixpkgs.follows = "nixpkgs"; # Don't, nix-init build breaks
     };
     nix-pre-commit = {
